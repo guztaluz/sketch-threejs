@@ -27,10 +27,10 @@ var exports = function(){
       if (mover.is_active) {
         mover.time++;
         mover.applyForce(gravity);
-        mover.applyDragForce(0.01);
+        mover.applyDrag(0.01);
         mover.updateVelocity();
         mover.updatePosition();
-        mover.position.sub(points.obj.position);
+        mover.position.sub(points.position);
         if (mover.time > 50) {
           mover.size -= 0.7;
           mover.a -= 0.009;
@@ -42,9 +42,9 @@ var exports = function(){
           mover.inactivate();
         }
       }
-      positions[i * 3 + 0] = mover.position.x;
-      positions[i * 3 + 1] = mover.position.y;
-      positions[i * 3 + 2] = mover.position.z;
+      positions[i * 3 + 0] = mover.position.x - points.position.x;
+      positions[i * 3 + 1] = mover.position.y - points.position.x;
+      positions[i * 3 + 2] = mover.position.z - points.position.x;
       opacities[i] = mover.a;
       sizes[i] = mover.size;
     }
@@ -63,7 +63,7 @@ var exports = function(){
         var range = (1- Math.log(Util.getRandomInt(32, 256)) / Math.log(256)) * 12;
         var vector = new THREE.Vector3();
         var force = Util.getSpherical(rad1, rad2, range);
-        vector.add(points.obj.position);
+        vector.add(points.position);
         mover.activate();
         mover.init(vector);
         mover.applyForce(force);
@@ -83,11 +83,11 @@ var exports = function(){
   };
 
   var movePoints = function(vector) {
-    var x = vector.y * document.body.clientWidth / -2.4;
-    var z = vector.x * document.body.clientHeight / -2.4;
-    points.anchor.x = x;
+    var y = vector.y * document.body.clientHeight / 3;
+    var z = vector.x * document.body.clientWidth / -3;
+    points.anchor.y = y;
     points.anchor.z = z;
-    light.anchor.x = x;
+    light.anchor.y = y;
     light.anchor.z = z;
   }
 
@@ -148,7 +148,8 @@ var exports = function(){
         colors: colors,
         opacities: opacities,
         sizes: sizes,
-        texture: createTexture()
+        texture: createTexture(),
+        blending: THREE.AdditiveBlending
       });
       light.init(0xff6600, 1800);
       scene.add(light.obj);
@@ -170,18 +171,18 @@ var exports = function(){
       movers = [];
     },
     render: function(camera) {
-      points.hook(0, 0.08);
-      points.applyDragForce(0.2);
+      points.applyHook(0, 0.08);
+      points.applyDrag(0.2);
       points.updateVelocity();
       points.updatePosition();
-      light.hook(0, 0.08);
-      light.applyDragForce(0.2);
+      light.applyHook(0, 0.08);
+      light.applyDrag(0.2);
       light.updateVelocity();
       light.updatePosition();
       activateMover();
       updateMover();
-      camera.hook(0, 0.004);
-      camera.applyDragForce(0.1);
+      camera.applyHook(0, 0.004);
+      camera.applyDrag(0.1);
       camera.updateVelocity();
       camera.updatePosition();
       camera.lookAtCenter();

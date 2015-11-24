@@ -14,11 +14,13 @@ var scene = null;
 var camera = null;
 
 var running = null;
-var sketches = require('./sketches');
+var sketch = {
+  name: 'fire ball',
+  obj: require('./sketches/fire_ball.js'),
+  date: '2015.11.12',
+  description: 'test of simple physics and additive blending.',
+};
 
-var btn_toggle_menu = document.querySelector('.btn-switch-menu');
-var menu = document.querySelector('.menu');
-var select_sketch = document.querySelector('.select-sketch');
 var sketch_title = document.querySelector('.sketch-title');
 var sketch_date = document.querySelector('.sketch-date');
 var sketch_description = document.querySelector('.sketch-description');
@@ -34,51 +36,26 @@ var initThree = function() {
   renderer.setSize(body_width, body_height);
   canvas.appendChild(renderer.domElement);
   renderer.setClearColor(0x111111, 1.0);
-
+  
   scene = new THREE.Scene();
-
+  
   camera = new Camera();
   camera.init(body_width, body_height);
-
-  running = new sketches[0].obj;
+  
+  running = new sketch.obj;
   running.init(scene, camera);
-
-  sketch_title.innerHTML = sketches[0].name;
-  sketch_date.innerHTML = 'date : ' + sketches[0].date;
-  sketch_description.innerHTML = sketches[0].description;
+  sketch_title.innerHTML = sketch.name;
+  sketch_date.innerHTML = 'date : ' + sketch.date;
+  sketch_description.innerHTML = sketch.description;
 };
 
 var init = function() {
-  buildMenu();
   initThree();
   renderloop();
   setEvent();
   debounce(window, 'resize', function(event){
     resizeRenderer();
   });
-};
-
-var buildMenu = function() {
-  for (var i = 0; i < sketches.length; i++) {
-    var sketch = sketches[i];
-    var dom = document.createElement('li');
-    dom.setAttribute('data-index', i);
-    dom.innerHTML = '<span>' + sketch.name + '</span>';
-    dom.addEventListener('click', function() {
-      switchSketch(sketches[this.getAttribute('data-index')]);
-    });
-    select_sketch.appendChild(dom);
-  }
-};
-
-var switchSketch = function(sketch) {
-  running.remove(scene);
-  running = new sketch.obj;
-  running.init(scene, camera);
-  sketch_title.innerHTML = sketch.name;
-  sketch_date.innerHTML = 'date : ' + sketch.date;
-  sketch_description.innerHTML = sketch.description;
-  switchMenu();
 };
 
 var render = function() {
@@ -138,11 +115,6 @@ var setEvent = function () {
     event.preventDefault();
     touchEnd();
   });
-  
-  btn_toggle_menu.addEventListener('click', function(event) {
-    event.preventDefault();
-    switchMenu();
-  });
 };
 
 var transformVector2d = function(vector) {
@@ -165,11 +137,6 @@ var touchMove = function(x, y) {
 var touchEnd = function(x, y) {
   vector_mouse_end.copy(vector_mouse_move);
   if (running.touchEnd) running.touchEnd(vector_mouse_end);
-};
-
-var switchMenu = function() {
-  btn_toggle_menu.classList.toggle('is-active');
-  menu.classList.toggle('is-active');
 };
 
 init();
