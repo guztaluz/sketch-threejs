@@ -1,5 +1,11 @@
 module.exports = [
   {
+    name: 'gallery',
+    obj: require('./sketches/gallery'),
+    date: '2015.12.2',
+    description: 'image gallery on 3d. tested that picked object and moving camera.',
+  },
+  {
     name: 'comet',
     obj: require('./sketches/comet'),
     date: '2015.11.24',

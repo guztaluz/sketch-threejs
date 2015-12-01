@@ -170,7 +170,7 @@ var exports = function(){
       scene.remove(bg);
       movers = [];
     },
-    render: function(camera) {
+    render: function(scene, camera) {
       points.applyHook(0, 0.08);
       points.applyDrag(0.2);
       points.updateVelocity();
@@ -187,16 +187,16 @@ var exports = function(){
       camera.updatePosition();
       camera.lookAtCenter();
     },
-    touchStart: function(vector) {
+    touchStart: function(scene, camera, vector) {
       movePoints(vector);
       is_draged = true;
     },
-    touchMove: function(vector_mouse_down, vector_mouse_move) {
+    touchMove: function(scene, camera, vector_mouse_down, vector_mouse_move) {
       if (is_draged) {
         movePoints(vector_mouse_move);
       }
     },
-    touchEnd: function(vector) {
+    touchEnd: function(scene, camera, vector) {
       is_draged = false;
       points.anchor.set(0, 0, 0);
       light.anchor.set(0, 0, 0);
