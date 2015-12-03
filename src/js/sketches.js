@@ -1,10 +1,16 @@
 module.exports = [
   // {
-  //   name: 'image data',
-  //   obj: require('./sketches/image_data'),
+  //   name: 'buffer',
+  //   obj: require('./sketches/buffer'),
   //   date: '2015.12.2',
   //   description: '',
   // },
+  {
+    name: 'image data',
+    obj: require('./sketches/image_data'),
+    date: '2015.12.2',
+    description: '',
+  },
   {
     name: 'gallery',
     obj: require('./sketches/gallery'),
