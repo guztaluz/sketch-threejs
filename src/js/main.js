@@ -39,23 +39,26 @@ var initThree = function() {
 
   camera = new Camera();
   camera.init(body_width, body_height);
-
-  running = new sketches[0].obj;
-  running.init(scene, camera);
-
-  sketch_title.innerHTML = sketches[0].name;
-  sketch_date.innerHTML = 'date : ' + sketches[0].date;
-  sketch_description.innerHTML = sketches[0].description;
 };
 
 var init = function() {
+  var sketch_id = getParameterByName('sketch_id');
+  if (sketch_id == null || sketch_id > sketches.length || sketch_id < 1) sketch_id = sketches.length;
   buildMenu();
   initThree();
+  startRunSketch(sketches[sketches.length - sketch_id]);
   renderloop();
   setEvent();
   debounce(window, 'resize', function(event){
     resizeRenderer();
   });
+};
+
+var getParameterByName = function(name) {
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+  var results = regex.exec(location.search);
+  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 };
 
 var buildMenu = function() {
@@ -71,13 +74,19 @@ var buildMenu = function() {
   }
 };
 
-var switchSketch = function(sketch) {
-  running.remove(scene);
+var startRunSketch = function(sketch) {
   running = new sketch.obj;
   running.init(scene, camera);
   sketch_title.innerHTML = sketch.name;
-  sketch_date.innerHTML = 'date : ' + sketch.date;
+  sketch_date.innerHTML = (sketch.update.length > 0)
+                          ? 'posted: ' + sketch.posted + ' / update: ' + sketch.update
+                          : 'posted: ' + sketch.posted;
   sketch_description.innerHTML = sketch.description;
+};
+
+var switchSketch = function(sketch) {
+  running.remove(scene, camera);
+  startRunSketch(sketch);
   switchMenu();
 };
 
@@ -138,7 +147,12 @@ var setEvent = function () {
     event.preventDefault();
     touchEnd(event.changedTouches[0].clientX, event.changedTouches[0].clientY, true);
   });
-  
+
+  window.addEventListener('mouseout', function () {
+    event.preventDefault();
+    touchEnd(0, 0, false);
+  });
+
   btn_toggle_menu.addEventListener('click', function(event) {
     event.preventDefault();
     switchMenu();
@@ -163,13 +177,14 @@ var touchMove = function(x, y, touch_event) {
 };
 
 var touchEnd = function(x, y, touch_event) {
-  vector_mouse_end.copy(vector_mouse_move);
+  vector_mouse_end.set(x, y);
   if (running.touchEnd) running.touchEnd(scene, camera, vector_mouse_end);
 };
 
 var switchMenu = function() {
   btn_toggle_menu.classList.toggle('is-active');
   menu.classList.toggle('is-active');
+  document.body.classList.remove('is-pointed');
 };
 
 init();
