@@ -1,22 +1,22 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Util = require('../modules/util');
-var Force = require('../modules/force');
+var Force3 = require('../modules/force3');
 
 var exports = function(){
   var Camera = function() {
     this.rad1_base = Util.getRadian(10);
     this.rad1 = this.rad1_base;
     this.rad2 = Util.getRadian(0);
-    this.look = new Force();
+    this.look = new Force3();
     this.rotate_rad1_base = 0;
     this.rotate_rad1 = 0;
     this.rotate_rad2_base = 0;
     this.rotate_rad2 = 0;
     this.range = 1000;
     this.obj;
-    Force.call(this);
+    Force3.call(this);
   };
-  Camera.prototype = Object.create(Force.prototype);
+  Camera.prototype = Object.create(Force3.prototype);
   Camera.prototype.constructor = Camera;
   Camera.prototype.init = function(width, height) {
     this.obj = new THREE.PerspectiveCamera(35, width / height, 1, 10000);
@@ -50,7 +50,7 @@ var exports = function(){
 
 module.exports = exports();
 
-},{"../modules/force":3,"../modules/util":6}],2:[function(require,module,exports){
+},{"../modules/force3":3,"../modules/util":6}],2:[function(require,module,exports){
 module.exports = function(object, eventType, callback){
   var timer;
 
@@ -114,16 +114,16 @@ module.exports = exports();
 
 },{"../modules/util":6}],4:[function(require,module,exports){
 var Util = require('../modules/util');
-var Force = require('../modules/force');
+var Force3 = require('../modules/force3');
 
 var exports = function(){
   var Mover = function() {
     this.size = 0;
     this.time = 0;
     this.is_active = false;
-    Force.call(this);
+    Force3.call(this);
   };
-  Mover.prototype = Object.create(Force.prototype);
+  Mover.prototype = Object.create(Force3.prototype);
   Mover.prototype.constructor = Mover;
   Mover.prototype.init = function(vector) {
     this.position = vector.clone();
@@ -143,18 +143,18 @@ var exports = function(){
 
 module.exports = exports();
 
-},{"../modules/force":3,"../modules/util":6}],5:[function(require,module,exports){
+},{"../modules/force3":3,"../modules/util":6}],5:[function(require,module,exports){
 var Util = require('../modules/util');
-var Force = require('../modules/force');
+var Force3 = require('../modules/force3');
 
 var exports = function(){
   var Points = function() {
     this.geometry = new THREE.BufferGeometry();
     this.material = null;
     this.obj = null;
-    Force.call(this);
+    Force3.call(this);
   };
-  Points.prototype = Object.create(Force.prototype);
+  Points.prototype = Object.create(Force3.prototype);
   Points.prototype.constructor = Points;
   Points.prototype.init = function(param) {
     this.material = new THREE.ShaderMaterial({
@@ -186,7 +186,7 @@ var exports = function(){
 
 module.exports = exports();
 
-},{"../modules/force":3,"../modules/util":6}],6:[function(require,module,exports){
+},{"../modules/force3":3,"../modules/util":6}],6:[function(require,module,exports){
 var exports = {
   getRandomInt: function(min, max){
     return Math.floor(Math.random() * (max - min)) + min;
@@ -393,9 +393,9 @@ var exports = function(){
     ctx.drawImage(image, 0, 0);
     var image_data = ctx.getImageData(0, 0, length_side, length_side);
     for (var y = 0; y < length_side; y++) {
-      if (y % 3 > 0) continue;;
+      if (y % 3 > 0) continue;
       for (var x = 0; x < length_side; x++) {
-        if (x % 3 > 0) continue;;
+        if (x % 3 > 0) continue;
         if(image_data.data[(x + y * length_side) * 4] > 0) {
           image_vertices.push(0, (y - length_side / 2) * -1, (x - length_side/ 2) * -1);
         }
@@ -432,7 +432,6 @@ var exports = function(){
       blending: THREE.NormalBlending
     });
     created_points = true;
-    console.log(points);
   };
 
   var applyForceToPoints = function() {
@@ -440,7 +439,7 @@ var exports = function(){
       var mover = movers[i];
       var rad1 = Util.getRadian(Util.getRandomInt(0, 360));
       var rad2 = Util.getRadian(Util.getRandomInt(0, 360));
-      var scalar = 50;
+      var scalar = Util.getRandomInt(40, 80);
       mover.is_activate = false;
       mover.applyForce(Util.getSpherical(rad1, rad2, scalar));
     }
@@ -461,13 +460,14 @@ var exports = function(){
       } else {
         mover.applyDrag(0.035);
       }
-      
       mover.updateVelocity();
       mover.updatePosition();
       mover.position.sub(points.position);
       positions[i * 3 + 0] = mover.position.x - points.position.x;
       positions[i * 3 + 1] = mover.position.y - points.position.x;
       positions[i * 3 + 2] = mover.position.z - points.position.x;
+      mover.size = Util.getRandomInt(12, 60)
+      sizes[i] = mover.size;
     }
     points.updatePoints();
   };
