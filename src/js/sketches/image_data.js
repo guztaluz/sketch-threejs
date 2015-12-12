@@ -33,9 +33,9 @@ var exports = function(){
     ctx.drawImage(image, 0, 0);
     var image_data = ctx.getImageData(0, 0, length_side, length_side);
     for (var y = 0; y < length_side; y++) {
-      if (y % 3 > 0) continue;;
+      if (y % 3 > 0) continue;
       for (var x = 0; x < length_side; x++) {
-        if (x % 3 > 0) continue;;
+        if (x % 3 > 0) continue;
         if(image_data.data[(x + y * length_side) * 4] > 0) {
           image_vertices.push(0, (y - length_side / 2) * -1, (x - length_side/ 2) * -1);
         }
@@ -72,7 +72,6 @@ var exports = function(){
       blending: THREE.NormalBlending
     });
     created_points = true;
-    console.log(points);
   };
 
   var applyForceToPoints = function() {
@@ -80,7 +79,7 @@ var exports = function(){
       var mover = movers[i];
       var rad1 = Util.getRadian(Util.getRandomInt(0, 360));
       var rad2 = Util.getRadian(Util.getRandomInt(0, 360));
-      var scalar = 50;
+      var scalar = Util.getRandomInt(40, 80);
       mover.is_activate = false;
       mover.applyForce(Util.getSpherical(rad1, rad2, scalar));
     }
@@ -101,13 +100,14 @@ var exports = function(){
       } else {
         mover.applyDrag(0.035);
       }
-      
       mover.updateVelocity();
       mover.updatePosition();
       mover.position.sub(points.position);
       positions[i * 3 + 0] = mover.position.x - points.position.x;
       positions[i * 3 + 1] = mover.position.y - points.position.x;
       positions[i * 3 + 2] = mover.position.z - points.position.x;
+      mover.size = Util.getRandomInt(12, 60)
+      sizes[i] = mover.size;
     }
     points.updatePoints();
   };
