@@ -180,6 +180,7 @@ var exports = function(){
     this.obj.geometry.attributes.position.needsUpdate = true;
     this.obj.geometry.attributes.vertexOpacity.needsUpdate = true;
     this.obj.geometry.attributes.size.needsUpdate = true;
+    this.obj.geometry.attributes.customColor.needsUpdate = true;
   };
   return Points;
 };
@@ -449,8 +450,6 @@ var exports = function(){
     for (var i = 0; i < movers.length; i++) {
       var mover = movers[i];
       mover.time++;
-      // mover.applyHook(0, 0.004);
-      // mover.applyDrag(0.115);
       if (mover.acceleration.length() < 1) {
         mover.is_activate = true;
       }
@@ -466,7 +465,7 @@ var exports = function(){
       positions[i * 3 + 0] = mover.position.x - points.position.x;
       positions[i * 3 + 1] = mover.position.y - points.position.x;
       positions[i * 3 + 2] = mover.position.z - points.position.x;
-      mover.size = Util.getRandomInt(12, 60)
+      mover.size = Math.log(Util.getRandomInt(1, 128)) / Math.log(128) * Math.sqrt(document.body.clientWidth);
       sizes[i] = mover.size;
     }
     points.updatePoints();
