@@ -6,7 +6,9 @@ var vs = glslify('../sketches/points.vs');
 var fs = glslify('../sketches/points.fs');
 
 var exports = function(){
-  var Sketch = function() {};
+  var Sketch = function(scene, camera) {
+    this.init(scene, camera);
+  };
   var image = new Image();
   var image_vertices = [];
   var movers = [];
@@ -174,6 +176,9 @@ var exports = function(){
     touchEnd: function(scene, camera, vector_mouse_end) {
       camera.anchor.z = 0;
       camera.anchor.y = 0;
+    },
+    mouseOut: function(scene, camera) {
+      this.touchEnd(scene, camera)
     }
   };
 

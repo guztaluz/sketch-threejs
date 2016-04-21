@@ -1,5 +1,12 @@
 module.exports = [
   {
+    name: 'metal cube',
+    obj: require('./sketches/metal_cube'),
+    posted: '2016.4.21',
+    update: '',
+    description: 'study of raymarching using three.js.',
+  },
+  {
     name: 'distort',
     obj: require('./sketches/distort'),
     posted: '2016.2.23',

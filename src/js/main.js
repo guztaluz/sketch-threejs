@@ -83,8 +83,7 @@ var buildMenu = function() {
 };
 
 var startRunSketch = function(sketch) {
-  running = new sketch.obj;
-  running.init(scene, camera);
+  running = new sketch.obj(scene, camera);
   sketch_title.innerHTML = sketch.name;
   sketch_date.innerHTML = (sketch.update.length > 0)
                           ? 'posted: ' + sketch.posted + ' / update: ' + sketch.update
@@ -115,6 +114,7 @@ var resizeRenderer = function() {
   body_height = document.body.clientHeight;
   renderer.setSize(body_width, body_height);
   camera.resize(body_width, body_height);
+  resizeWindow();
 };
 
 var setEvent = function () {
@@ -158,7 +158,7 @@ var setEvent = function () {
 
   window.addEventListener('mouseout', function () {
     event.preventDefault();
-    touchEnd(0, 0, false);
+    mouseOut();
   });
 
   btn_toggle_menu.addEventListener('click', function(event) {
@@ -189,10 +189,20 @@ var touchEnd = function(x, y, touch_event) {
   if (running.touchEnd) running.touchEnd(scene, camera, vector_mouse_end);
 };
 
+var mouseOut = function() {
+  vector_mouse_end.set(0, 0);
+  if (running.mouseOut) running.mouseOut(scene, camera);
+};
+
 var switchMenu = function() {
   btn_toggle_menu.classList.toggle('is-active');
   menu.classList.toggle('is-active');
   document.body.classList.remove('is-pointed');
 };
+
+var resizeWindow = function() {
+  if (running.resizeWindow) running.resizeWindow(scene, camera);
+};
+
 
 init();
