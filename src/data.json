@@ -12,6 +12,15 @@
       "path": "/",
       "color": "white"
     },
+    "formation": {
+      "title": "formation",
+      "id": "formation",
+      "description": "polygons makes various formation.",
+      "path": "/sketch/formation.html",
+      "posted": "2017.x.x",
+      "update": "",
+      "color": "black"
+    },
     "attract": {
       "title": "attract",
       "id": "attract",
