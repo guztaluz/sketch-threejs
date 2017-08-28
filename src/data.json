@@ -12,6 +12,15 @@
       "path": "/",
       "color": "white"
     },
+    "sphere": {
+      "title": "sphere",
+      "id": "sphere",
+      "description": "create multiple designs that are based on sphere object.",
+      "path": "/sketch/sphere.html",
+      "posted": "20XX.X.X",
+      "update": "",
+      "color": "black"
+    },
     "puddle": {
       "title": "puddle",
       "id": "puddle",
