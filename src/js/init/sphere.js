@@ -106,7 +106,7 @@ export default function() {
     resizeWindow();
 
     renderer.setClearColor(0xeeeeee, 1.0);
-    camera.position.set(0, 0, 100);
+    camera.position.set(0, 0, 1000);
     camera.lookAt(new THREE.Vector3());
 
     renderLoop();
