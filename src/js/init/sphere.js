@@ -1,18 +1,26 @@
+import FlatShell from '../modules/sketch/sphere/FlatShell';
+
 const debounce = require('js-util/debounce');
 
 export default function() {
+  const resolution = {
+    x: 0,
+    y: 0
+  };
   const canvas = document.getElementById('canvas-webgl');
   const renderer = new THREE.WebGLRenderer({
     antialias: false,
     canvas: canvas,
   });
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(90, document.body.clientWidth / window.innerHeight, 1, 10000);
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 10000);
   const clock = new THREE.Clock();
 
   const vectorTouchStart = new THREE.Vector2();
   const vectorTouchMove = new THREE.Vector2();
   const vectorTouchEnd = new THREE.Vector2();
+
+  const CAMERA_SIZE = 300;
 
   let isDrag = false;
 
@@ -20,7 +28,9 @@ export default function() {
   // process for this sketch.
   //
 
+  const flatShell = new FlatShell();
 
+  scene.add(flatShell.obj);
 
   //
   // common process
@@ -33,11 +43,20 @@ export default function() {
     requestAnimationFrame(renderLoop);
   };
   const resizeWindow = () => {
-    canvas.width = document.body.clientWidth;
-    canvas.height = window.innerHeight;
-    camera.aspect = document.body.clientWidth / window.innerHeight;
+    resolution.x = document.body.clientWidth;
+    resolution.y = window.innerHeight;
+    canvas.width = resolution.x;
+    canvas.height = resolution.y;
+
+    const cameraSizeX = (resolution.x / resolution.y > 1) ? CAMERA_SIZE : resolution.x / resolution.y * CAMERA_SIZE;
+    const cameraSizeY = (resolution.y / resolution.x > 1) ? CAMERA_SIZE : resolution.y / resolution.x * CAMERA_SIZE;
+    camera.left = -cameraSizeX;
+    camera.right = cameraSizeX;
+    camera.top = cameraSizeY;
+    camera.bottom = -cameraSizeY;
     camera.updateProjectionMatrix();
-    renderer.setSize(document.body.clientWidth, window.innerHeight);
+
+    renderer.setSize(resolution.x, resolution.y);
   };
   const touchStart = (isTouched) => {
     isDrag = true;
@@ -83,13 +102,13 @@ export default function() {
   };
 
   const init = () => {
-    renderer.setSize(document.body.clientWidth, window.innerHeight);
-    renderer.setClearColor(0xeeeeee, 1.0);
-    camera.position.set(1000, 1000, 1000);
-    camera.lookAt(new THREE.Vector3());
-
     on();
     resizeWindow();
+
+    renderer.setClearColor(0xeeeeee, 1.0);
+    camera.position.set(0, 0, 100);
+    camera.lookAt(new THREE.Vector3());
+
     renderLoop();
   }
   init();
