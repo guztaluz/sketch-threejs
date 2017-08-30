@@ -20,7 +20,9 @@ export default function() {
   const vectorTouchMove = new THREE.Vector2();
   const vectorTouchEnd = new THREE.Vector2();
 
-  const CAMERA_SIZE = 300;
+  const CAMERA_SIZE_BASE = 600;
+  const RESOLUTION_MIN_X = 1024;
+  const RESOLUTION_MIN_Y = 728;
 
   let isDrag = false;
 
@@ -42,20 +44,29 @@ export default function() {
     render();
     requestAnimationFrame(renderLoop);
   };
+  const resizeCamera = () => {
+    let x = 0;
+    let y = 0;
+    if (resolution.x >= resolution.y) {
+      x = CAMERA_SIZE_BASE;
+      y = resolution.y / resolution.x * CAMERA_SIZE_BASE;
+
+    } else {
+      x = resolution.x / resolution.y * CAMERA_SIZE_BASE;
+      y = CAMERA_SIZE_BASE;
+    }
+    camera.left   = x * -0.5;
+    camera.right  = x *  0.5;
+    camera.top    = y *  0.5;
+    camera.bottom = y * -0.5;
+    camera.updateProjectionMatrix();
+  };
   const resizeWindow = () => {
     resolution.x = document.body.clientWidth;
     resolution.y = window.innerHeight;
     canvas.width = resolution.x;
     canvas.height = resolution.y;
-
-    const cameraSizeX = (resolution.x / resolution.y > 1) ? CAMERA_SIZE : resolution.x / resolution.y * CAMERA_SIZE;
-    const cameraSizeY = (resolution.y / resolution.x > 1) ? CAMERA_SIZE : resolution.y / resolution.x * CAMERA_SIZE;
-    camera.left = -cameraSizeX;
-    camera.right = cameraSizeX;
-    camera.top = cameraSizeY;
-    camera.bottom = -cameraSizeY;
-    camera.updateProjectionMatrix();
-
+    resizeCamera();
     renderer.setSize(resolution.x, resolution.y);
   };
   const touchStart = (isTouched) => {
