@@ -20,9 +20,8 @@ export default function() {
   const vectorTouchMove = new THREE.Vector2();
   const vectorTouchEnd = new THREE.Vector2();
 
-  const CAMERA_SIZE_BASE = 600;
-  const RESOLUTION_MIN_X = 1024;
-  const RESOLUTION_MIN_Y = 728;
+  const CAMERA_SIZE_X = 640;
+  const CAMERA_SIZE_Y = 480;
 
   let isDrag = false;
 
@@ -45,16 +44,8 @@ export default function() {
     requestAnimationFrame(renderLoop);
   };
   const resizeCamera = () => {
-    let x = 0;
-    let y = 0;
-    if (resolution.x >= resolution.y) {
-      x = CAMERA_SIZE_BASE;
-      y = resolution.y / resolution.x * CAMERA_SIZE_BASE;
-
-    } else {
-      x = resolution.x / resolution.y * CAMERA_SIZE_BASE;
-      y = CAMERA_SIZE_BASE;
-    }
+    const x = Math.min((resolution.x / resolution.y) / (CAMERA_SIZE_X / CAMERA_SIZE_Y), 1.0) * CAMERA_SIZE_X;
+    const y = Math.min((resolution.y / resolution.x) / (CAMERA_SIZE_Y / CAMERA_SIZE_X), 1.0) * CAMERA_SIZE_Y;
     camera.left   = x * -0.5;
     camera.right  = x *  0.5;
     camera.top    = y *  0.5;
