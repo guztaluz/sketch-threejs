@@ -1,5 +1,7 @@
 import FlatShell from '../modules/sketch/sphere/FlatShell';
 import FlatShellCore from '../modules/sketch/sphere/FlatShellCore';
+import Spark from '../modules/sketch/sphere/Spark';
+import SparkCore from '../modules/sketch/sphere/SparkCore';
 
 const debounce = require('js-util/debounce');
 
@@ -33,6 +35,8 @@ export default function() {
 
   const flatShell = new FlatShell();
   const flatShellCore = new FlatShellCore();
+  const spark = new Spark();
+  const sparkCore = new SparkCore();
 
   //
   // common process
@@ -41,6 +45,8 @@ export default function() {
     const time = clock.getDelta();
     flatShell.render(time);
     flatShellCore.render(time);
+    spark.render(time);
+    sparkCore.render(time);
     renderer.render(scene, camera);
   };
   const renderLoop = () => {
@@ -115,8 +121,10 @@ export default function() {
     camera.position.set(0, 100, 1000);
     camera.lookAt(new THREE.Vector3());
 
-    scene.add(flatShell.obj);
-    scene.add(flatShellCore.obj);
+    // scene.add(flatShell.obj);
+    // scene.add(flatShellCore.obj);
+    scene.add(spark.obj);
+    scene.add(sparkCore.obj);
 
     renderLoop();
   }
