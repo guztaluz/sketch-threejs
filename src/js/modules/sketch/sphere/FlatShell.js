@@ -1,6 +1,6 @@
 const glslify = require('glslify');
 const GEOMETRY_RADIUS = 100;
-const GEOMETRY_DETAIL = 3;
+const GEOMETRY_DETAIL = 4;
 
 export default class FlatShell {
   constructor() {
@@ -19,6 +19,7 @@ export default class FlatShell {
         uniforms: this.uniforms,
         vertexShader: glslify('../../../../glsl/sketch/sphere/flatShell.vs'),
         fragmentShader: glslify('../../../../glsl/sketch/sphere/flatShell.fs'),
+        depthWrite: false,
         transparent: true,
         side: THREE.DoubleSide,
         shading: THREE.FlatShading,

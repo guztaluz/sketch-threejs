@@ -9,7 +9,7 @@ export default function() {
   };
   const canvas = document.getElementById('canvas-webgl');
   const renderer = new THREE.WebGLRenderer({
-    antialias: false,
+    antialias: true,
     canvas: canvas,
   });
   const scene = new THREE.Scene();
@@ -31,12 +31,13 @@ export default function() {
 
   const flatShell = new FlatShell();
 
-  scene.add(flatShell.obj);
 
   //
   // common process
   //
   const render = () => {
+    const time = clock.getDelta();
+    flatShell.render(time);
     renderer.render(scene, camera);
   };
   const renderLoop = () => {
@@ -107,9 +108,11 @@ export default function() {
     on();
     resizeWindow();
 
-    renderer.setClearColor(0xeeeeee, 1.0);
-    camera.position.set(0, 0, 1000);
+    renderer.setClearColor(0xffffff, 1.0);
+    camera.position.set(500, 100, 500);
     camera.lookAt(new THREE.Vector3());
+
+    scene.add(flatShell.obj);
 
     renderLoop();
   }
