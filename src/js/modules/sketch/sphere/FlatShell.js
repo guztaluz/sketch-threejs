@@ -11,6 +11,7 @@ export default class FlatShell {
       }
     }
     this.obj = this.createObj();
+    this.obj.renderOrder = 10;
   }
   createObj() {
     return new THREE.Mesh(
@@ -23,6 +24,7 @@ export default class FlatShell {
         transparent: true,
         side: THREE.DoubleSide,
         shading: THREE.FlatShading,
+        blending: THREE.CustomBlending,
       })
     )
   }

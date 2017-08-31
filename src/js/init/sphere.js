@@ -1,4 +1,5 @@
 import FlatShell from '../modules/sketch/sphere/FlatShell';
+import FlatShellCore from '../modules/sketch/sphere/FlatShellCore';
 
 const debounce = require('js-util/debounce');
 
@@ -11,6 +12,7 @@ export default function() {
   const renderer = new THREE.WebGLRenderer({
     antialias: true,
     canvas: canvas,
+    alpha: true,
   });
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 10000);
@@ -30,7 +32,7 @@ export default function() {
   //
 
   const flatShell = new FlatShell();
-
+  const flatShellCore = new FlatShellCore();
 
   //
   // common process
@@ -38,6 +40,7 @@ export default function() {
   const render = () => {
     const time = clock.getDelta();
     flatShell.render(time);
+    flatShellCore.render(time);
     renderer.render(scene, camera);
   };
   const renderLoop = () => {
@@ -109,10 +112,11 @@ export default function() {
     resizeWindow();
 
     renderer.setClearColor(0xffffff, 1.0);
-    camera.position.set(500, 100, 500);
+    camera.position.set(0, 100, 1000);
     camera.lookAt(new THREE.Vector3());
 
     scene.add(flatShell.obj);
+    scene.add(flatShellCore.obj);
 
     renderLoop();
   }
