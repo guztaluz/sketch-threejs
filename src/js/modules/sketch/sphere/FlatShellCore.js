@@ -1,6 +1,6 @@
 const glslify = require('glslify');
-const GEOMETRY_RADIUS = 40;
-const GEOMETRY_DETAIL = 1;
+const GEOMETRY_RADIUS = 80;
+const GEOMETRY_DETAIL = 2;
 
 export default class FlatShellCore {
   constructor() {

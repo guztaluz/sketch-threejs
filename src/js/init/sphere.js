@@ -121,10 +121,10 @@ export default function() {
     camera.position.set(0, 100, 1000);
     camera.lookAt(new THREE.Vector3());
 
-    // scene.add(flatShell.obj);
-    // scene.add(flatShellCore.obj);
-    scene.add(spark.obj);
-    scene.add(sparkCore.obj);
+    scene.add(flatShell.obj);
+    scene.add(flatShellCore.obj);
+    // scene.add(spark.obj);
+    // scene.add(sparkCore.obj);
 
     renderLoop();
   }
