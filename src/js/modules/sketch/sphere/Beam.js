@@ -11,7 +11,6 @@ export default class Beam {
       }
     }
     this.obj = this.createObj();
-    this.obj.renderOrder = 10;
   }
   createObj() {
     return new THREE.Mesh(

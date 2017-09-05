@@ -24,7 +24,6 @@ export default class FlatShell {
         transparent: true,
         side: THREE.DoubleSide,
         shading: THREE.FlatShading,
-        blending: THREE.CustomBlending,
       })
     )
   }
