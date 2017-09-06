@@ -13,6 +13,7 @@ const init = () => {
     require('./init/commonSketch.js').default();
     switch (pageId) {
       case 'sphere':      require('./init/sphere.js').default(); break;
+      case 'butterfly':   require('./init/butterfly.js').default(); break;
       case 'puddle':      require('./init/puddle.js').default(); break;
       case 'reel':        require('./init/reel.js').default(); break;
       case 'glitch':      require('./init/glitch.js').default(); break;
